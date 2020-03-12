@@ -1,0 +1,45 @@
+.menuContainer {
+    width: 240px;
+    position: fixed;
+    background-color: #0c0d0d;
+    bottom: 0;
+    top: 0;
+    padding: 10px 20px;
+    box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.42), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);   
+}
+
+.menuContainer::after {
+    content: "";
+    background: url('../../assets/background.jpg');
+    opacity: 0.3;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;   
+    background-size: cover;
+  }
+
+.list-menu {
+    list-style: none;
+    padding: 0px;
+}
+
+.list-menu li {
+    padding: 5px;
+}
+
+.list-menu li a {
+    position: relative;
+}
+
+.list-menu li i {
+    position: absolute;
+    left: 15px;
+    font-size: 25px;
+}
+
+.color {
+    color: white;
+}

@@ -1,0 +1,100 @@
+.conteModal {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: #1a1a1acc;
+    z-index: 999;
+}
+
+.conteBody{
+    max-width: 500px;
+    max-height: 80%;
+    margin: 3% auto;
+    background: white;
+    border-radius: 10px;
+}
+
+.conteBody .scroll {
+    padding: 10px;
+}
+
+.scroll {
+    overflow: auto;
+    max-height: 460px;
+}
+
+footer{
+    text-align: left;
+    padding: 20px;
+}
+
+.btnClose{
+    border-style: none;
+    width: 70px;
+    border-radius: 15px;
+    border: 1px solid #acabab;
+    background: transparent;
+    color: #6d6b6b;
+}
+
+.input-group-text {
+    width: 110px !important;
+}
+
+.modal-headers {
+    padding: .75rem 1.25rem;
+    margin-bottom: 17px;
+    background-color: rgba(0,0,0,.03);
+    border-bottom: 1px solid rgba(0,0,0,.125);
+    color: #fff !important;
+    background: linear-gradient(60deg, #ab47bc, #8e24aa) !important;
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0,.14), 0 7px 10px -5px rgba(156, 39, 176,.4) !important;
+    border-radius: 10px 10px 0px 0px;
+}
+
+.modal-foo {
+    position: relative;
+}
+
+.btnSave {
+ 
+    border-style: none;
+    color: #fff;
+    border-color: #ab47bc;
+    background: linear-gradient(60deg, #ab47bc, #8e24aa) !important;
+    border-radius: 17px;
+    padding: 5px;
+    width: 180px;
+}
+
+.btnSave i {
+    margin-right: 10px !important;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey; 
+    border-radius: 10px;
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #b2a9a9; 
+    border-radius: 10px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #2b2a2a; 
+  }
+
+  .MuiFormControl-root {
+      width: 100% !important;
+  }
