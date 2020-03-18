@@ -1,12 +1,12 @@
 import React, {PureComponent} from 'react';
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import './App.css';
-
 // component
 import Home from './Components/Home/home';
 import Register from './Components/Register/register';
 import Menu from './Components/Menu/menu';
 import Contratos from './Components/Contratos/contratos';
+import Edit from './Components/Edit/edit';
 
 class App extends PureComponent {
 
@@ -41,6 +41,7 @@ render() {
                   <Route path='/home' component = { Home } />
                   <Route path='/register' component = { Register } />
                   <Route path='/contratos' component = { Contratos } />
+                  <Route path='/edit' component = { Edit } />
               </Switch>
           </div>
         </div>

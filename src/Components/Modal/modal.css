@@ -95,6 +95,16 @@ footer{
     background: #2b2a2a; 
   }
 
-  .MuiFormControl-root {
-      width: 100% !important;
+  .formControl {
+      width: 50% !important;
   }
+  .none{
+    display: none;
+  }
+  .input-group {
+      display: block !important;
+      text-align: -webkit-center !important;
+  }
+  /* .MuiFormControl-root {
+      width: 100% !important;
+  } */

@@ -1,19 +1,27 @@
-import React, {PureComponent} from 'react';
+import React, {PureComponent}           from 'react';
+import { connect }                      from 'react-redux';
 import './contratos.css'
-import MaterialTable from 'material-table';
-import { confirmAlert } from 'react-confirm-alert';
+import PropTypes                        from 'prop-types';
+import MaterialTable                    from 'material-table';
+import { confirmAlert }                 from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast }        from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { setContract, setDelete, setSearchContract, clearNotify } from '../../actions/contract';
 
 const domain = 'https://smartcost-poc-api.azurewebsites.net/api'
 
-export default class Contratos extends PureComponent {
+class Contratos extends PureComponent {
 
     constructor() {
+     
         super();
         this.state = {
             data: [],
+            prov: [],
+            show: false,
+            value: '',
+            mod: 2,
             columns: [ 
                 { title: 'N° contrato', field: 'nroContrato' },
                 { title: 'Fecha', field: 'fechaInicio' },
@@ -21,13 +29,14 @@ export default class Contratos extends PureComponent {
                 { title: 'Monto Base', field: 'montoBase' }
             ],
         }
+
     }
 
     componentDidMount() {
-        this.listContratos();
+       this.props.setContract();
     }
 
-    notify = () => toast.success("Eliminado correctamente... :)");
+    notify = (type, info) => toast(info, { type: type});
 
     delete = (id) => {
         confirmAlert({
@@ -64,40 +73,55 @@ export default class Contratos extends PureComponent {
 
     deleteItem = (id) => {
 
-        fetch(`${domain}/Contratos/${id}`, {
-            method: 'DELETE',
-        })
-        .then(response => {
-            return response.json();
-        })
-        .then(data => {
-            this.listContratos();
-            this.notify();
-        });
+        this.props.setDelete(id);
 
     }
 
-    listContratos= () => {
+    start = (type, info) => {
 
-        fetch(`${domain}/Contratos`, {
-            method: 'GET',
-        })
+        this.notify(type, info);
+
+        this.props.clearNotify();
+
+    }
+
+    provincias(info) {
+
+        fetch(`${domain}/Contratistas/${info.id}/Provincias`)
         .then(response => {
             return response.json();
         })
-        .then(data => {
-            if(data.length > 0) {
-                this.setState({
-                    data: data
-                })
-            }
-        });
+        .then(prov => {
+          this.setState({ 
+            prov: prov,
+            value: info,
+            show: !this.state.show 
+          })
+
+        });     
+    }
+
+    edit = e => {
+
+        this.props.setSearchContract(e);
+        this.props.history.push('/edit')
     }
 
     render() {
         return (
             <div>
+
             <ToastContainer />
+            <div className="none">
+                {    
+                    this.props.notifyStatus.status? 
+                    ( 
+                        this.start(this.props.notifyStatus.type, this.props.notifyStatus.info)
+                    )
+                    :
+                    ( null )
+                }
+            </div>
             <div className="card">
                 <div className="card-header">
                     <h5>Mis contratos</h5>
@@ -106,7 +130,7 @@ export default class Contratos extends PureComponent {
                 <MaterialTable
                     title="Contratos"
                     columns={this.state.columns}
-                    data={this.state.data}
+                    data={this.props.contract}
                     actions={[
                         {
                             icon: 'delete_outline',
@@ -116,7 +140,7 @@ export default class Contratos extends PureComponent {
                         {
                             icon: 'edit',
                             tooltip: 'Edit',
-                            onClick: (e, rowData) => {this.update()}
+                            onClick: (e, rowData) => {this.edit(rowData);}
                         }
                     ]}>
                 </MaterialTable>
@@ -127,3 +151,26 @@ export default class Contratos extends PureComponent {
     }
 
 }
+
+Contratos.propTypes = {
+    setContract: PropTypes.func.isRequired
+}
+
+const mapStateToProps = state => {
+    return {
+        contract:       state.contract.contract,
+        notifyStatus:   state.notifyStatus
+    }
+}
+
+const mapDispatchToPropsActions = dispatch => {
+    return {
+        
+        clearNotify:        value => dispatch(clearNotify(value)),
+        setContract:        value => dispatch(setContract(value)),
+        setDelete:          value => dispatch(setDelete(value)),
+        setSearchContract:  value => dispatch(setSearchContract(value))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToPropsActions)(Contratos);

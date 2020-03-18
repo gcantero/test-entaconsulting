@@ -1,7 +1,14 @@
 import React, {PureComponent} from 'react';
+import { connect }                                  from 'react-redux';
 import './home.css'
+import { setContractors } from '../../actions/index';
 
-export default class Home extends PureComponent {
+
+class Home extends PureComponent {
+
+    componentDidMount() { 
+        this.props.setContractors();
+    }
 
     render() {
         return (
@@ -45,3 +52,11 @@ export default class Home extends PureComponent {
     }
 
 }
+
+const mapDispatchToPropsActions = dispatch => {
+    return {
+        setContractors: value => dispatch(setContractors(value)),
+    }
+}
+
+export default connect(null, mapDispatchToPropsActions)(Home)

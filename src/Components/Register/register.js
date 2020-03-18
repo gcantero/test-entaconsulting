@@ -1,40 +1,31 @@
 import React, {PureComponent} from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import './register.css';
+import { ToastContainer, toast } from 'react-toastify';
 import MaterialTable from 'material-table';
 import Modal from '../Modal/modal';
+import { setContractors } from '../../actions/index';
 
 const domain = 'https://smartcost-poc-api.azurewebsites.net/api'
 
-export default class Register extends PureComponent {
+class Register extends PureComponent {
 
     constructor() {
         super();
         this.state = {
             prov: [],
             show: false,
-            value: 1,
+            value: '',
+            mod: 1,
             columns: [ { title: 'Contratista', field: 'razonSocial' } ],
-            data: [],
         };
+
+
     }
 
     componentDidMount() {
-        this.listContractor();
-    }
-
-    listContractor= () => {
-
-        fetch(`${domain}/Contratistas`, {
-            method: 'GET',
-        })
-        .then(response => {
-            return response.json();
-        })
-        .then(data => {
-            if(data.length > 0) {
-                this.setState({data: data})
-            }
-        });
+        this.props.setContractors();
     }
 
     provincias(info) {
@@ -62,21 +53,27 @@ export default class Register extends PureComponent {
             show: !this.state.show 
         })
     }
-  
+
+    notify = (type, info) => toast(info, { type: type});
+
     render() {
 
         return (
-            <div>
-                <Modal onClose={this.hideModal} show={this.state.show} prov={this.state.prov} value={this.state.value}></Modal>
+            <div>  
+
+            <Modal onClose={this.hideModal} show={this.state.show} prov={this.state.prov} value={this.state.value} mod={this.state.mod}></Modal>
+            <ToastContainer />
+
                 <div className="card">
                     <div className="card-header">
                         <h5>Lista de contratistas</h5>
+
                     </div>
                     <div className="card-body">
                         <MaterialTable
                             title="Contratistas"
                             columns={this.state.columns}
-                            data={this.state.data}
+                            data={this.props.contractors}
                             actions={[
                                 {
                                 icon: 'fiber_new',
@@ -92,3 +89,21 @@ export default class Register extends PureComponent {
         )
     }
 }
+
+Register.propTypes = {
+   setContractors: PropTypes.func.isRequired
+}
+
+const mapStateToProps = state => {
+    return {
+        contractors: state.contractors.contractors
+    }
+}
+
+const mapDispatchToPropsActions = dispatch => {
+    return {
+        setContractors: value => dispatch(setContractors(value))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToPropsActions)(Register);
